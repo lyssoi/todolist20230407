@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useCallback, useEffect, useState } from "react";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import TodoCreate from "./components/TodoCreate";
+import TodoHead from "./components/ToDoHead";
+import TodoList from "./components/ToDoList";
+import TodoTemplate from "./components/ToDoTemplate";
+import { darkTheme, lightTheme } from "./theme/theme";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: #e9ecef;
+  }
+`;
 
 function App() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleDarkMode = () => {
+    setIsDarkMode((isDarkMode) => !isDarkMode);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <TodoTemplate>
+          <TodoHead isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+          <TodoList />
+          <TodoCreate />
+        </TodoTemplate>
+      </ThemeProvider>
+    </>
   );
 }
 
